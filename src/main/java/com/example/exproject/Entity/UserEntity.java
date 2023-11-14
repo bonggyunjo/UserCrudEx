@@ -6,7 +6,6 @@ import jakarta.persistence.Id;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 
-
 @Entity(name="user")
 @NoArgsConstructor
 public class UserEntity {

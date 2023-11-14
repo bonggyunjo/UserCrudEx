@@ -33,9 +33,8 @@ public class UserService {
 
         return validatorResult;
     }
-    /*
-    회원 계정 생성(중복되는 id 찾기)
-    */
+
+    // 회원 계정 생성(중복되는 id 찾기)
     public UserEntity create(UserDto userDto) {
         String id = userDto.getId();
         log.info("DTO의 아이디" + id);

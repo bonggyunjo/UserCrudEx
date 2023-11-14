@@ -1,34 +1,31 @@
 package com.example.exproject.Api;
 
-import com.example.exproject.Dto.UserDto;
-import com.example.exproject.Entity.UserEntity;
 import com.example.exproject.Service.UserService;
-import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
 
 @RestController
-
 public class UserApiController {
-/*
     private UserService userService;
-
     public UserApiController(UserService userService){
         this.userService=userService;
     }
 
-    @GetMapping("/SignUp/SignUp/{id}")
-    public ResponseEntity<Boolean> checkId(@PathVariable String id) {
-        return ResponseEntity.ok(userService.existsById(id));
+    //아이디 중복확인
+@PostMapping("checkid")
+public ResponseEntity<Boolean> checkid(@RequestParam("id") String id){
+    boolean exists = userService.existsById(id);
+    // log.info("디비 잘 작동함");
+    return new ResponseEntity<>(exists, HttpStatus.OK);
+}
+
+    //닉네임 중복확인
+    @PostMapping("checknickname")
+    public ResponseEntity<Boolean> checknickname(@RequestParam("nickname") String nickname){
+        boolean exists = userService.existsByNickName(nickname);
+        // log.info("디비 잘 작동함");
+        return new ResponseEntity<>(exists, HttpStatus.OK);
     }
-    @GetMapping("/SignUp/SignUp/{id}")
-    public ResponseEntity<Boolean> checkNickname(@PathVariable String nickname) {
-        return ResponseEntity.ok(userService.existsById(nickname));
-    }
-*/
 }

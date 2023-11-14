@@ -8,11 +8,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 
 public interface UserRepository extends CrudRepository<UserEntity,String> {
-
+    //아이디 중복확인
     boolean existsById(String id);
+    //닉네임 중복확인
     boolean existsByNickname(String nickname);
-
-    @Query("select u.id from user u where u.id = :id")
-    String findID(@RequestParam String id);
-
 }

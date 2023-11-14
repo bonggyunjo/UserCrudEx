@@ -11,7 +11,7 @@
         /*<!-- 입력창 -->*/
         .container.py-4 {
             margin: 0 auto;
-            width: 503px;
+            width: 433px;
         }
 
         /*<!-- 회원가입 버튼 -->*/
@@ -41,22 +41,25 @@
             <!-- 아이디 입력 -->
             <div class="form-group">
                 <label for="exampleInputEmail1" class="form-label mt-4"> ID </label>
-                <input type="text" id="id" name="id" value="{{#userDto}}{{userDto.id}}{{/userDto}}" oninput="hideidMessage()" class="form-control" placeholder="아이디를 입력해주세요"/>
-                {{#valid_id}} <span id="valid_id" style="font-size: 12px; color:red;">{{valid_id}}</span> {{/valid_id}}
+                <div>
+                <input type="text" id="id" name="id" value="{{#userDto}}{{userDto.id}}{{/userDto}}" oninput="hideidMessage()" class="form-control" placeholder="ID"/>
+
+                    <button  type="button" id="checkidButton" style="  background : dodgerblue; float:right; left:-305px; position: relative; top:-76px; ">
+                        중복확인
+                    </button>
+                </div>
+                    {{#valid_id}} <span id="valid_id" style="font-size: 12px; color:red;">{{valid_id}}</span> {{/valid_id}}
                 <div><span id="checkId"></span></div>
 
 
-                <!-- 아이디 중복확인 버튼 -->
-                    <span class="form-group-checkid-button"></span>
-                    <button class="btn btn-primary" type="button" id="checkidButton" style="  background : dodgerblue; position: absolute;top: 183px;right: 440px;transform: translate(-50%, -50%);">
-                        중복확인
-                    </button>
+
+
             </div>
 
             <div class="form-group has-success">
                 <!-- 비밀번호 입력 -->
                 <label class="form-label mt-4" for="inputValid"> Password </label>
-                <input type="password" id="pw" name="pw" value="{{#userDto}}{{userDto.pw}}{{/userDto}}" oninput="hidepwMessage()" class="form-control" placeholder="비밀번호를 입력해주세요"/>
+                <input type="password" id="pw" name="pw" value="{{#userDto}}{{userDto.pw}}{{/userDto}}" oninput="hidepwMessage()" class="form-control" placeholder="Password"/>
                 {{#valid_pw}} <span id="valid_pw" style="font-size: 12px; color:red;">{{valid_pw}}</span> {{/valid_pw}}
 
 
@@ -67,15 +70,23 @@
 
             <!-- 비밀번호 재확인 입력 -->
             <label class="form-label mt-4" for="inputInvalid"> Re-enter Password </label>
-            <input type="password" class="form-control invalid" id="newRe-enterPW">
+            <input type="password" class="form-control invalid" id="newRe-enterPW" placeholder="CheckPassword">
             <div><span id="checkPw"></span></div>
         </div>
     <div class="form-group-nickname">
+        <div>
         <label class="form-label mt-4" for="newNickName">Nickname</label>
+
+        <button  type="button" id="checknicknameButton" style="  background : dodgerblue; float:right; left:-255px; position: relative; top:20px;">
+            중복확인
+        </button>
+        </div>
         <div class="input-group">
-            <input type="nickname" name="nickname" id="nickname" value="{{#userDto}}{{userDto.nickname}}{{/userDto}}" oninput="hidenicknameMessage()" class="form-control" placeholder="닉네임을 입력해주세요" />
+            <input type="nickname" name="nickname" id="nickname" value="{{#userDto}}{{userDto.nickname}}{{/userDto}}" oninput="hidenicknameMessage()" class="form-control" placeholder="nickname" />
         </div>
         {{#valid_nickname}} <span id="valid_nickname" style="font-size: 12px; color:red;">{{valid_nickname}}</span> {{/valid_nickname}}
+        <div><span id="checknickname"></span></div>
+        <!-- 닉네임 중복확인 버튼 -->
     </div>
 
     <div class="d-grid gap-2">
@@ -193,24 +204,47 @@
         }
     }
 </script>
-<script>
-    $("#checkidButton").click(function () {
-        var id = $("#id").val(); // 사용자가 입력한 id를 받아옵니다.
 
-        // AJAX 요청을 보냅니다.
+<!-- 중복확인 -->
+<script>
+    // 아이디 중복확인
+    $("#checkidButton").click(function () {
+        var id = $("#id").val();
+
+        // AJAX 요청
         $.ajax({
-            url: "/checkid", // 중복확인을 처리할 서버의 URL입니다.
+            url: "/checkid", // 중복확인을 처리할 서버 URL
             type: "post",
             data: { id: id },
             success: function (response) {
-                // 서버에서 응답을 받았을 때의 처리입니다.
-                if (response) { // 응답이 true라면, 즉 사용자 ID가 존재한다면
+                // 서버에서 응답을 받았을 때의 처리
+                if (response) {
                     alert("중복된 아이디입니다.");
-                   
+
                 } else { // 그렇지 않다면
                     alert("사용 가능한 아이디입니다.");
                 }
             }
         });
     });
+    $("#checknicknameButton").click(function () {
+        var nickname = $("#nickname").val();
+
+        // AJAX 요청을 보냅니다.
+        $.ajax({
+            url: "/checknickname", // 중복확인을 처리할 서버의 URL
+            type: "post",
+            data: { nickname: nickname },
+            success: function (response) {
+                // 서버에서 응답을 받았을 때의 처리
+                if (response) {
+                    alert("중복된 닉네임");
+
+                } else {
+                    alert("사용 가능");
+                }
+            }
+        });
+    });
+
 </script>

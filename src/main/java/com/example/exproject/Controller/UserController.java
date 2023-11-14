@@ -6,15 +6,11 @@ import com.example.exproject.Service.UserService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,19 +19,18 @@ import java.util.Map;
 @Slf4j
 public class UserController {
     private UserService userService;
-    /*
-    회원가입 뷰 페이지
-    */
+    /* 회원가입 뷰 페이지  */
     @GetMapping("/signup")
     public String showSignUp() {
-
         return "/SignUp/SignUp";
     }
+    /* 로그인 뷰 페이지  */
     @GetMapping("/login")
     public String showLogin(){
         return "/Login/Login";
     }
 
+    // 유효성 검사 로직 Errors
     @PostMapping("/signup")
     public String execSignup(@Valid UserDto userDto, Errors errors, Model model) {
         Map<String, String> response = new HashMap<>();
@@ -49,23 +44,10 @@ public class UserController {
             {
                 model.addAttribute(key, validatorResult.get(key));
             }
-            response.put("status", "error");
-            response.put("message", validatorResult.toString());
-            return "/SignUp/SignUp";
+            return "/SignUp/SignUp"; // 회원가입 페이지 유지
         }
 
         userService.create(userDto);
-        response.put("status", "success");
-        response.put("message", "회원가입에 성공하였씁니다.");
-        return "redirect:/login";
+        return "redirect:/login"; //로그인 페이지 이동
     }
-
-
-    @PostMapping("checkid")
-    public ResponseEntity<Boolean> checkid(@RequestParam("id") String id){
-        boolean exists = userService.existsById(id);
-        log.info("디비 잘 작동함");
-        return new ResponseEntity<>(exists, HttpStatus.OK);
-    }
-
 }
