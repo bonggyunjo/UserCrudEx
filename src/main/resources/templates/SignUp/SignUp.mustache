@@ -14,33 +14,9 @@
             width: 503px;
         }
 
-        /*<!-- nickname 입력창 -->*/
-        .form-group-nickname {
-            margin: 0 auto;
-            width: 403px;
-            position: relative;
-            right: 39px;
-        }
-
-        /*<!-- nickname 버튼 -->*/
-        .form-group-nickname-button {
-            margin: 0 auto;
-            padding-left: 5px;
-            position: relative;
-            top: -40px;
-            left: 403px;
-        }
-
-        /*<!-- nickname 버튼 밑의 메세지 -->*/
-        .form-group-nickname-message {
-            position: relative;
-            top: -38px;
-        }
-
         /*<!-- 회원가입 버튼 -->*/
         .d-grid.gap-2 {
             padding-top: 30px;
-
         }
 
     </style>
@@ -50,66 +26,74 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="css/style.css" rel="stylesheet"/>
     <title> SignUp </title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
 <section class="bg-light">
     <div class="container py-4">
         <div class="row align-items-center justify-content-between">
             <a class="navbar-brand hi text-center" href="/signup">
-                <span class="text-dark h4"> Create </span> <span class="text-primary h4"> Account </span>
+                <span class="text-dark h4"> Sign Up  </span>
             </a>
         </div>
-
+<form id="signupForm" action="/signup" method="post">
         <div>
             <!-- 아이디 입력 -->
             <div class="form-group">
-                <label for="exampleInputEmail1" class="form-label mt-4"> ID(Email) </label>
-                <input type="text" class="form-control invalid" id="newID" aria-describedby="emailHelp" name="id">
+                <label for="exampleInputEmail1" class="form-label mt-4"> ID </label>
+                <input type="text" id="id" name="id" value="{{#userDto}}{{userDto.id}}{{/userDto}}" oninput="hideidMessage()" class="form-control" placeholder="아이디를 입력해주세요"/>
+                {{#valid_id}} <span id="valid_id" style="font-size: 12px; color:red;">{{valid_id}}</span> {{/valid_id}}
                 <div><span id="checkId"></span></div>
+
+
+                <!-- 아이디 중복확인 버튼 -->
+                    <span class="form-group-checkid-button"></span>
+                    <button class="btn btn-primary" type="button" id="checkidButton" style="  background : dodgerblue; position: absolute;top: 183px;right: 440px;transform: translate(-50%, -50%);">
+                        중복확인
+                    </button>
             </div>
+
             <div class="form-group has-success">
                 <!-- 비밀번호 입력 -->
-                <label class="form-label mt-4" for="inputValid"> PW </label>
-                <input type="password" class="form-control valid" id="newPW" name="pw">
+                <label class="form-label mt-4" for="inputValid"> Password </label>
+                <input type="password" id="pw" name="pw" value="{{#userDto}}{{userDto.pw}}{{/userDto}}" oninput="hidepwMessage()" class="form-control" placeholder="비밀번호를 입력해주세요"/>
+                {{#valid_pw}} <span id="valid_pw" style="font-size: 12px; color:red;">{{valid_pw}}</span> {{/valid_pw}}
+
+
                 <div class="valid-feedback"></div>
             </div>
         </div>
         <div class="form-group has-danger">
+
             <!-- 비밀번호 재확인 입력 -->
-            <label class="form-label mt-4" for="inputInvalid"> Re-enter PW </label>
+            <label class="form-label mt-4" for="inputInvalid"> Re-enter Password </label>
             <input type="password" class="form-control invalid" id="newRe-enterPW">
             <div><span id="checkPw"></span></div>
-
         </div>
-        <div class="form-group-nickname">
-            <label for="newNickName" class="form-label mt-4">NickName</label>
-            <!-- 닉네임 입력 -->
-            <div class="input-group">
-                <input type="text" class="form-control" id="newNickName" name="nickname">
-            </div>
-            <div class="form-group-nickname-button">
-                <span class="form-group-button"></span>
-                <button class="btn btn-primary" type="button" id="checkNickNameButton" style="position:relative; background: lightgray ">
-                    Check
-                </button>
-            </div>
-            <div class="form-group-nickname-message"><span id="checkNickName"></span></div>
+    <div class="form-group-nickname">
+        <label class="form-label mt-4" for="newNickName">Nickname</label>
+        <div class="input-group">
+            <input type="nickname" name="nickname" id="nickname" value="{{#userDto}}{{userDto.nickname}}{{/userDto}}" oninput="hidenicknameMessage()" class="form-control" placeholder="닉네임을 입력해주세요" />
         </div>
-        <div class="d-grid gap-2">
-            <!-- 회원 가입 버튼 -->
-            <button class="btn btn-primary btn-lg" type="button" id="signUpButton" style="background: lightgray"> Sign UP</button>
-        </div>
+        {{#valid_nickname}} <span id="valid_nickname" style="font-size: 12px; color:red;">{{valid_nickname}}</span> {{/valid_nickname}}
     </div>
 
+    <div class="d-grid gap-2">
+            <!-- 회원 가입 버튼 -->
+            <button class="btn btn-primary btn-lg" type="submit" id="signUpButton" style="background: dodgerblue"> Sign UP</button>
+        </div>
+    </div>
+    </form>
 </section>
 
 </body>
 </html>
-<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>-->
+
+<!-- 스크립트 -->
 <script>
     {
         // ID(email) 입력란 변수화
-        const idInput = document.querySelector("#newID");
+        const idInput = document.querySelector("#id");
 
         // ID(email) 형식 검증
         const validateEmail = (email) => {
@@ -143,7 +127,7 @@
 
         // 비밀번호 일치 여부 확인
         const checkPasswordMatch = () => {
-            const newPassword = document.querySelector("#newPW").value;
+            const newPassword = document.querySelector("#pw").value;
             const reEnteredPassword = newReEnterPWInput.value;
             const checkMessage = document.querySelector("#checkPw");
 
@@ -161,82 +145,72 @@
                 }
             }
         };
-
         // 비밀번호 재확인 입력란에 keyup 이벤트 핸들러 추가
         newReEnterPWInput.addEventListener("keyup", checkPasswordMatch);
-
         // nickname 입력란 변수화
-        const nicknameInput = document.querySelector("#newNickName");
+        const nicknameInput = document.querySelector("#nickname");
 
         // nickname check 메시지
+
         const checkMessage = document.querySelector("#checkNickName");
-
-        // check 버튼 변수화
-        const checkNickNameButton = document.querySelector("#checkNickNameButton");
-
-        // check 버튼 클릭 이벤트 감지
-        checkNickNameButton.addEventListener("click", function () {
-            const url = "/SignUp/SignUp" + nicknameInput.value;
-            fetch(url, {
-                method: "GET"
-            }).then(response => {
-                if (response.ok) {
-                    checkMessage.textContent = 'Available';
-                    checkMessage.style.color = '#2fb380';
-                    nicknameInput.classList.remove("is-invalid");
-                    nicknameInput.classList.add("is-valid");
-                } else {
-                    checkMessage.textContent = 'Unavailable';
-                    checkMessage.style.color = '#dc3545';
-                    nicknameInput.classList.remove("is-valid");
-                    nicknameInput.classList.add("is-invalid");
-                }
-            }).catch(err => {
-                console.log(err);
-            })
-        });
-
-        // Sign Up 버튼 변수화
-        const userInfoBtn = document.querySelector("#signUpButton");
-
-        // 버튼 클릭 이벤트 감지
-        userInfoBtn.addEventListener("click", function () {
-            const userInfo = {
-                id: document.querySelector("#newID").value,
-                pw: document.querySelector("#newPW").value,
-                Re_enterPW: document.querySelector("#newRe-enterPW").value,
-                nickname: document.querySelector("#newNickName").value
-            }
-
-            if (!validateEmail(userInfo.id)) {
-                alert("이메일 형식이 맞지않습니다!");
-                return;
-            }
-
-            console.log(userInfo);
-
-            //fetch() -> 요청을 자바스크립트로 보내줌
-            const url = "SignUp/SignUp";
-            fetch(url, {
-                method: "POST",
-                body: JSON.stringify(userInfo),
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            }).then(response => {
-                if (response.ok) {
-                    alert("회원가입이 완료되었습니다!");
-
-                } else {
-                    alert("회원가입에 실패하였습니다!");
-                    window.location.reload();
-                }
-            }).catch(err => {
-                console.log(err);
-            });
-        });
-
-
     }
 
+    // id 검증메시지 실시간 처리 함수
+    function hideidMessage() {
+        var input = document.getElementById("id");
+
+        var valid_id = document.getElementById("valid_id");
+        if (input.value.trim() != "") {
+            valid_id.style.display = "none"; //공백처리
+        } else {
+            valid_id.style.display = "block";
+        }
+    }
+
+    // pw 검증메시지 실시간 처리 함수
+    function hidepwMessage() {
+        var input = document.getElementById("pw");
+        var valid_pw = document.getElementById("valid_pw");
+        var pattern = new RegExp('(?=.*[0-9])(?=.*[a-zA-Z])(?=.*\\W)(?=\\S+$).{8,16}');
+
+        if (input.value.trim() != "" && pattern.test(input.value)) {
+            valid_pw.style.display = "none";
+        } else {
+            valid_pw.style.display = "block";
+        }
+    }
+
+    // nickname 검증메시지 실시간 처리 함수
+    function hidenicknameMessage() {
+        var input = document.getElementById("nickname");
+
+        var valid_nk = document.getElementById("valid_nickname");
+        if (input.value.trim() != "") {
+            valid_nk.style.display = "none";
+        } else
+        {
+            valid_nk.style.display = "block";
+        }
+    }
+</script>
+<script>
+    $("#checkidButton").click(function () {
+        var id = $("#id").val(); // 사용자가 입력한 id를 받아옵니다.
+
+        // AJAX 요청을 보냅니다.
+        $.ajax({
+            url: "/checkid", // 중복확인을 처리할 서버의 URL입니다.
+            type: "post",
+            data: { id: id },
+            success: function (response) {
+                // 서버에서 응답을 받았을 때의 처리입니다.
+                if (response) { // 응답이 true라면, 즉 사용자 ID가 존재한다면
+                    alert("중복된 아이디입니다.");
+                   
+                } else { // 그렇지 않다면
+                    alert("사용 가능한 아이디입니다.");
+                }
+            }
+        });
+    });
 </script>
