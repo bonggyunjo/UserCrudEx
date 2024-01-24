@@ -5,6 +5,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+/*
+아아디, 닉네임 중복확인을 위한 로직
+*/
 
 @RestController
 public class UserApiController {
@@ -12,6 +15,7 @@ public class UserApiController {
     public UserApiController(UserService userService){
         this.userService=userService;
     }
+
 
     //아이디 중복확인
 @PostMapping("checkid")

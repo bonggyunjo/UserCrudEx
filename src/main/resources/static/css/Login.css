@@ -1,0 +1,43 @@
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center; /* 입력 필드와 버튼을 중앙에 배열하도록 설정 */
+    height: 70vh;
+    width: 100%; /* .center 요소의 너비를 제한합니다 */
+    margin: 0 auto; /* .center 요소를 화면 중앙에 배치합니다 */
+    flex-direction: column; /* .center 요소 내부의 요소들을 세로로 배치합니다 */
+}
+.logo {
+    width: 100px;
+    height: 100px;
+}
+input[type="text"], input[type="password"], input[type="submit"] {
+    width: 100%; /* 가로 크기를 100%로 설정 */
+    box-sizing: border-box;
+    margin-bottom: 5px;
+    height: 30px;
+}
+input[type="submit"] {
+    background-color: black; /* 배경색을 검정색으로 설정 */
+    color: white; /* 글씨색을 하얀색으로 설정 */
+}
+input[type="submit"]:hover {
+    background-color: #00BFFF; /* 마우스를 올렸을 때 배경색을 조금 더 진한 파란색으로 설정 */
+}
+.link-container {
+    display: flex;
+    justify-content: center;
+    align-items: center; /* 링크를 중앙에 배치 */
+    flex-direction: row; /* 링크를 가로로 배치 */
+}
+button {
+    color: black; /* 버튼의 기본 색상을 검정색으로 설정 */
+    font-size: 0.6em; /* 글자 크기를 더 줄입니다 */
+    margin: 0 10px; /* 버튼 사이의 간격을 조절합니다 */
+    background: none; /* 배경색을 제거합니다 */
+    border: none; /* 테두리를 제거합니다 */
+    cursor: pointer; /* 마우스를 올렸을 때 커서 모양을 손가락 모양으로 변경합니다 */
+}
+button:hover {
+    color: 	#00BFFF; /* 마우스를 올렸을 때 버튼의 색상을 파란색으로 설정 */
+}
